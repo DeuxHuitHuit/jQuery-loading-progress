@@ -30,12 +30,12 @@
 		var
 		
 		t = $(this),
-		o = $.extend({}, $.loadProgress.defaults, options),
+		o = $.extend({}, $.loadProgress.defaults, $.isFunction(options) ? {load:options} : options),
 			
 		loaded = function () {
 			
 			if (!!o.debug) {
-				console.log('100%');
+				console.log('window loaded at 100%, ' + o.count + '/' + o.total);
 			}
 			
 			o.percent = 100;
