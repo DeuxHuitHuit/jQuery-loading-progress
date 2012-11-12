@@ -13,6 +13,7 @@
 	$.loadProgress = {
 		defaults: {
 			load: null, // function (options)
+			global: false,
 			total: 0,
 			count: 0,
 			percent: 0,
@@ -39,6 +40,7 @@
 			}
 			
 			o.percent = 100;
+			o.global = true;
 			
 			if ($.isFunction(o.load)) {
 				o.load.call(t, o);
@@ -47,18 +49,20 @@
 		
 		loadElem = function () {
 			var t = $(this),
-				src = t.attr('src');
+				src = t.attr('src') || t.attr('data-src');
 			
 			o.count++;
 			
-			o.percent = parseInt( (o.count / o.total) * 100, 10) || 0;
+			if (!o.global) { // global load was raised, forget about the last elements
+				o.percent = parseInt( (o.count / o.total) * 100, 10) || 0;
 			
-			if (!!o.debug) {
-				console.log( o.count + '/' + o.total + ' ' + src );
-			}
-			
-			if ($.isFunction(o.load)) {
-				o.load.call(t, o);
+				if (!!o.debug) {
+					console.log( o.count + '/' + o.total + ' ' + src );
+				}
+				
+				if ($.isFunction(o.load)) {
+					o.load.call(t, o);
+				}
 			}
 		},
 		
@@ -67,7 +71,7 @@
 				
 			elems.each(function (index, elem) {
 				var t = $(elem),
-					src = t.attr('src');
+					src = t.attr('src') || t.attr('data-src');
 				
 				if (!!src && !~$.inArray(src, loadElems)) {
 					loadElems.push(src);
