@@ -1,7 +1,7 @@
 /*
- *  Sizing v1.0 - jQuery Loading Progress
+ *  jQuery Loading Progress
  *
- *  Copyright (c) 2012 Deux Huit Huit (http://www.deuxhuithuit.com/)
+ *  Copyright (c) 2012-2013 Deux Huit Huit (http://www.deuxhuithuit.com/)
  *  Licensed under the MIT (https://github.com/DeuxHuitHuit/jQuery-loading-progress/blob/master/LICENSE.txt)
  */
 
@@ -17,25 +17,27 @@
 			total: 0,
 			count: 0,
 			percent: 0,
-			debug: false
+			debug: false,
+			fakeIncTimeout: 1000
 		}
 	};
 	
-	var 
-	
-	plugin = function (options) {
+	var plugin = function (options) {
 		if (!this.length || !this.each) {
 			return this;
 		}
 		
-		var
+		var t = $(this);
+		var o = $.extend({}, $.loadProgress.defaults, $.isFunction(options) ? {load:options} : options);
+			
+		var updatePercent = function () {
+			o.percent = Math.min(100, ~~((o.count / o.total) * 100) || 0);
+		};
 		
-		t = $(this),
-		o = $.extend({}, $.loadProgress.defaults, $.isFunction(options) ? {load:options} : options),
+		var loaded = function () {
+			stopFakeIncTimer();
 			
-		loaded = function () {
-			
-			if (!!o.debug) {
+			if (!!o.debug && !!window.console) {
 				console.log('window loaded at 100%, ' + o.count + '/' + o.total);
 			}
 			
@@ -45,33 +47,37 @@
 			if ($.isFunction(o.load)) {
 				o.load.call(t, o);
 			}
-		},
+		};
 		
-		loadElem = function () {
-			var t = $(this),
-				src = t.attr('src') || t.attr('data-src');
+		var loadElem = function () {
+			var t = $(this);
+			var src = t.attr('src') || t.attr('data-src');
+			
+			stopFakeIncTimer();
 			
 			o.count++;
 			
 			if (!o.global) { // global load was raised, forget about the last elements
-				o.percent = parseInt( (o.count / o.total) * 100, 10) || 0;
-			
-				if (!!o.debug) {
+				updatePercent();
+				
+				if (!!o.debug && !!window.console) {
 					console.log( o.count + '/' + o.total + ' ' + src );
 				}
 				
 				if ($.isFunction(o.load)) {
 					o.load.call(t, o);
 				}
+				
+				startFakeIncTimer();
 			}
-		},
+		};
 		
-		loading = function (elems) {
+		var loading = function (elems) {
 			var loadElems = []; 
 				
 			elems.each(function (index, elem) {
-				var t = $(elem),
-					src = t.attr('src') || t.attr('data-src');
+				var t = $(elem);
+				var src = t.attr('src') || t.attr('data-src');
 				
 				if (!!src && !~$.inArray(src, loadElems)) {
 					loadElems.push(src);
@@ -82,11 +88,50 @@
 			o.total = loadElems.length;
 		};
 		
+		
+		var fakeIncTimer = 0;
+		
+		var fakeIncCallback = function () {
+			if (!!o.global) {
+				return;
+			}
+			// simulate *some* download
+			o.count += (~~(Math.random() * 10000) % 3) + 1;
+			updatePercent();
+			
+			if (!!o.debug && !!window.console) {
+				console.log( o.count + '/' + o.total + ' *FAKE*' );
+			}
+			
+			if ($.isFunction(o.load)) {
+				o.load.call(t, o);
+			}
+			
+			startFakeIncTimer();
+		};
+		
+		var startFakeIncTimer = function () {
+			// start fake increment timer, if enabled and not running
+			if (!!o.fakeIncTimeout && !o.global && !fakeIncTimer) {
+				fakeIncTimer = setTimeout(fakeIncCallback, o.fakeIncTimeout);
+			}
+		};
+		
+		var stopFakeIncTimer = function () {
+			if (!!fakeIncTimer) {
+				clearTimeout(fakeIncTimer);
+				fakeIncTimer = 0;
+			}
+		};
+		
 		// hook up event
 		loading(t);
 		
 		// hook up global event
 		$(window).load(loaded);
+		
+		// start our fake timer (for IE)
+		startFakeIncTimer();
 		
 		return t;
 	};

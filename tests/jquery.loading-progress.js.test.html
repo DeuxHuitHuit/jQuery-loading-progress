@@ -31,7 +31,7 @@
 
 			doc.write('<script src="http://ajax.googleapis.com/ajax/libs/jquery/'+v+'/jquery.min.js">' + "<" + '/' + 'script>');
 			co.log('\nLoading jQuery v' + v + '\n');
-		})(window.document, console);
+		})(window.document, window.console);
 	</script>
 </head>
 <body>
@@ -40,26 +40,38 @@
     <h2 id="qunit-userAgent"></h2>  
     <ol id="qunit-tests"></ol>
 	
-	<div id="div"></div>
+	<img src="http://www.dvdbeaver.com/film2/DVDReviews42/matrix%20blu-ray/large/large%20matrix%20blu-ray7.jpg" alt="" />
 
 	<script src="../src/jquery.loading-progress.js"></script> 
 	<script src="../qunit/qunit.js"></script>
 	<script>
 	(function ($) {
 		
-		var _private = null,
-			$div = $('#div');
+		var _private = null;
 		
-		function runTests () {
-			
+		var runTests = function () {
+			var loaded = false;
+
 			module('jQuery.loading-progress');
 			
-			test('null', function () {
-				ok(true, 'Simple test');
+			test('load test', function () {
+				stop();
+				$('img').loadProgress({
+					debug: true,
+					load: function (o) {
+						ok(o.global || o.count);
+						
+						if (!loaded) {
+							start();
+							loaded = true;
+						}
+					}
+				});
+
 			});
 		};
 		
-		$(runTests);
+		runTests();
 		
 	})(jQuery);
 	</script>

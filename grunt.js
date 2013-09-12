@@ -8,7 +8,7 @@ module.exports = function(grunt) {
 		pkg: '<json:package.json>',
 		meta: {
 			banner: '/*! <%= pkg.title || pkg.name %> - v<%= pkg.version %> - ' +
-			'<%= grunt.template.today("yyyy-mgit com-dd") %>\n' +
+			'<%= grunt.template.today("yyyy-mm-dd hh:MM") %>\n' +
 			'<%= pkg.homepage ? "* " + pkg.homepage + "\n" : "" %>' +
 			'* Copyright (c) <%= grunt.template.today("yyyy") %> <%= pkg.author.name %>;' +
 			' Licensed <%= _.pluck(pkg.licenses, "type").join(", ") %> */'
@@ -21,12 +21,12 @@ module.exports = function(grunt) {
 		},
 		qunit: {
 			files: [
-				'http://localhost:8080/tests/jquery.loading-progress.js.test.html?noglobals=true&jquery=1.8',
-				'http://localhost:8080/tests/jquery.loading-progress.js.test.html?noglobals=true&jquery=1.7',
-				'http://localhost:8080/tests/jquery.loading-progress.js.test.html?noglobals=true&jquery=1.6',
-				'http://localhost:8080/tests/jquery.loading-progress.js.test.html?noglobals=true&jquery=1.5',
-				'http://localhost:8080/tests/jquery.loading-progress.js.test.html?noglobals=true&jquery=1.4',
-				'http://localhost:8080/tests/jquery.loading-progress.js.test.html?noglobals=true&jquery=1.3']
+				'http://localhost:8080/tests/jquery.loading-progress.js.test.html?noglobals=true&notrycatch=true&jquery=1.8',
+				'http://localhost:8080/tests/jquery.loading-progress.js.test.html?noglobals=true&notrycatch=true&jquery=1.7',
+				'http://localhost:8080/tests/jquery.loading-progress.js.test.html?noglobals=true&notrycatch=true&jquery=1.6',
+				'http://localhost:8080/tests/jquery.loading-progress.js.test.html?noglobals=true&notrycatch=true&jquery=1.5',
+				'http://localhost:8080/tests/jquery.loading-progress.js.test.html?noglobals=true&notrycatch=true&jquery=1.4',
+				'http://localhost:8080/tests/jquery.loading-progress.js.test.html?noglobals=true&notrycatch=true&jquery=1.3']
 		},
 		lint: {
 			files: ['grunt.js', 'src/jquery.*.js']
