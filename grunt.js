@@ -21,12 +21,13 @@ module.exports = function(grunt) {
 		},
 		qunit: {
 			files: [
+				'http://localhost:8080/tests/jquery.loading-progress.js.test.html?noglobals=true&notrycatch=true&jquery=2.0.3',
+				'http://localhost:8080/tests/jquery.loading-progress.js.test.html?noglobals=true&notrycatch=true&jquery=1.10.2',
+				'http://localhost:8080/tests/jquery.loading-progress.js.test.html?noglobals=true&notrycatch=true&jquery=1.9.1',
 				'http://localhost:8080/tests/jquery.loading-progress.js.test.html?noglobals=true&notrycatch=true&jquery=1.8',
 				'http://localhost:8080/tests/jquery.loading-progress.js.test.html?noglobals=true&notrycatch=true&jquery=1.7',
 				'http://localhost:8080/tests/jquery.loading-progress.js.test.html?noglobals=true&notrycatch=true&jquery=1.6',
-				'http://localhost:8080/tests/jquery.loading-progress.js.test.html?noglobals=true&notrycatch=true&jquery=1.5',
-				'http://localhost:8080/tests/jquery.loading-progress.js.test.html?noglobals=true&notrycatch=true&jquery=1.4',
-				'http://localhost:8080/tests/jquery.loading-progress.js.test.html?noglobals=true&notrycatch=true&jquery=1.3']
+				'http://localhost:8080/tests/jquery.loading-progress.js.test.html?noglobals=true&notrycatch=true&jquery=1.5']
 		},
 		lint: {
 			files: ['grunt.js', 'src/jquery.*.js']
