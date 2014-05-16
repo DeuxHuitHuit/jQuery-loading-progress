@@ -59,7 +59,7 @@
 				$('img').loadProgress({
 					debug: true,
 					load: function (o) {
-						ok(o.global || o.count);
+						ok(o.global || o.percent);
 						
 						if (!loaded) {
 							start();

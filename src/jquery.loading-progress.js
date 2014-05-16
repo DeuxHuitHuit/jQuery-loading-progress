@@ -72,12 +72,11 @@
 					console.log( o.count + '/' + o.total + ' ' + src );
 				}
 				
-				if (!o.timeBased) {
-					if ($.isFunction(o.load)) {
-						o.load.call(t, o);
-					}
-					startFakeIncTimer();
+				if (!o.timeBased && $.isFunction(o.load)) {
+					o.load.call(t, o);
 				}
+				
+				startFakeIncTimer();
 			}
 		};
 		
@@ -117,19 +116,19 @@
 		
 		var fakeIncTimer = 0;
 		
-		var fakeIncCallback = function () {
+		var fakeIncCallback = function (modulo) {
 			if (!!o.global) {
 				return;
 			}
 			// simulate *some* download
-			o.count += (~~(Math.random() * 10000) % 15) + 1;
-			updatePercent();
+			var random = (~~(Math.random() * 100000)) % (modulo || 3);
+			o.percent = Math.min(100, o.percent + (random + 1));
 			
 			if (!!o.debug && !!window.console) {
 				console.log( o.count + '/' + o.total + ' *FAKE*' );
 			}
 			
-			if ($.isFunction(o.load)) {
+			if (!o.timeBased && $.isFunction(o.load)) {
 				o.load.call(t, o);
 			}
 			
@@ -156,13 +155,11 @@
 		// hook up global event
 		$(window).load(loaded);
 		
-		if (!o.timeBased) {
-			// start our fake timer (for IE)
-			fakeIncCallback();
-		} else {
+		if (!!o.timeBased) {
 			timeBasedCallback();
 		}
 		
+		fakeIncCallback(50);
 		
 		return t;
 	};
