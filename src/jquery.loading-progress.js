@@ -1,13 +1,13 @@
 /*
  *  jQuery Loading Progress
  *
- *  Copyright (c) 2012-2013 Deux Huit Huit (http://www.deuxhuithuit.com/)
+ *  Copyright (c) 2012-2014 Deux Huit Huit (http://www.deuxhuithuit.com/)
  *  Licensed under the MIT (https://github.com/DeuxHuitHuit/jQuery-loading-progress/blob/master/LICENSE.txt)
  */
 
 (function ($, undefined) {
 	
-	"use strict";
+	'use strict';
 	
 	// defaults values
 	$.loadProgress = {
@@ -18,7 +18,9 @@
 			count: 0,
 			percent: 0,
 			debug: false,
-			fakeIncTimeout: 1000
+			fakeIncTimeout: 1000,
+			timeBased: 0,
+			timeBasedPercent: 0
 		}
 	};
 	
@@ -28,8 +30,14 @@
 		}
 		
 		var t = $(this);
-		var o = $.extend({}, $.loadProgress.defaults, $.isFunction(options) ? {load:options} : options);
-			
+		var o = $.extend({}, $.loadProgress.defaults, $.isFunction(options) ? 
+			{load: options} : options
+		);
+		
+		if (!!o.timeBased) {
+			o.timeBased = Math.max(20, o.timeBased || 0);
+		}
+		
 		var updatePercent = function () {
 			o.percent = Math.min(100, ~~((o.count / o.total) * 100) || 0);
 		};
@@ -64,11 +72,12 @@
 					console.log( o.count + '/' + o.total + ' ' + src );
 				}
 				
-				if ($.isFunction(o.load)) {
-					o.load.call(t, o);
+				if (!o.timeBased) {
+					if ($.isFunction(o.load)) {
+						o.load.call(t, o);
+					}
+					startFakeIncTimer();
 				}
-				
-				startFakeIncTimer();
 			}
 		};
 		
@@ -88,6 +97,23 @@
 			o.total = loadElems.length;
 		};
 		
+		var timeBasedCallback = function () {
+			
+			// update timeBasedPercent
+			o.timeBasedPercent = Math.min(o.percent, o.timeBasedPercent + 1);
+			o.timeBasedGlobal = o.timeBasedPercent < 100;
+			
+			if (!!o.debug && !!window.console) {
+				console.log(o.percent, o.timeBasedPercent);
+			}
+			
+			if ($.isFunction(o.load)) {
+				o.load.call(t, o);
+			}
+			if (o.timeBasedGlobal) {
+				setTimeout(timeBasedCallback, o.timeBased);
+			}
+		};
 		
 		var fakeIncTimer = 0;
 		
@@ -96,7 +122,7 @@
 				return;
 			}
 			// simulate *some* download
-			o.count += (~~(Math.random() * 10000) % 3) + 1;
+			o.count += (~~(Math.random() * 10000) % 15) + 1;
 			updatePercent();
 			
 			if (!!o.debug && !!window.console) {
@@ -130,8 +156,13 @@
 		// hook up global event
 		$(window).load(loaded);
 		
-		// start our fake timer (for IE)
-		startFakeIncTimer();
+		if (!o.timeBased) {
+			// start our fake timer (for IE)
+			fakeIncCallback();
+		} else {
+			timeBasedCallback();
+		}
+		
 		
 		return t;
 	};

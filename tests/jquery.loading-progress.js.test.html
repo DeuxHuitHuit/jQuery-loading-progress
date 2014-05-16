@@ -1,24 +1,24 @@
-<!DOCTYPE html> 
-<html lang="en"> 
-<head> 
-	<meta charset="utf-8" /> 
-	<title>jQuery Loading Progress test suite</title> 
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="utf-8" />
+	<title>jQuery Loading Progress test suite</title>
 	
 	<link rel="stylesheet" href="../qunit/qunit.css" type="text/css"/>
 	
 	<style type="text/css">
 
-  	</style>
+	</style>
 	
 	<script>
 		(function (doc,co) {
 			// http://stackoverflow.com/questions/901115/get-query-string-values-in-javascript
 			var u = {},
 				e,
-		        a = /\+/g,  // Regex for replacing addition symbol with a space
-		        r = /([^&=]+)=?([^&]*)/g,
-		        d = function (s) { return decodeURIComponent(s.replace(a, " ")); },
-		        q = window.location.search.substring(1),
+				a = /\+/g,  // Regex for replacing addition symbol with a space
+				r = /([^&=]+)=?([^&]*)/g,
+				d = function (s) { return decodeURIComponent(s.replace(a, " ")); },
+				q = window.location.search.substring(1),
 				v = '2.0.3';
 
 			while (e = r.exec(q)) {
@@ -36,9 +36,9 @@
 </head>
 <body>
 	<h1 id="qunit-header">jQuery Loading Progress</h1>  
-    <h2 id="qunit-banner"></h2>  
-    <h2 id="qunit-userAgent"></h2>  
-    <ol id="qunit-tests"></ol>
+	<h2 id="qunit-banner"></h2>  
+	<h2 id="qunit-userAgent"></h2>  
+	<ol id="qunit-tests"></ol>
 	
 	<img src="http://www.dvdbeaver.com/film2/DVDReviews42/matrix%20blu-ray/large/large%20matrix%20blu-ray7.jpg" alt="" />
 
@@ -51,7 +51,7 @@
 		
 		var runTests = function () {
 			var loaded = false;
-
+			
 			module('jQuery.loading-progress');
 			
 			test('load test', function () {
@@ -67,7 +67,7 @@
 						}
 					}
 				});
-
+				
 			});
 		};
 		
