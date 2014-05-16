@@ -159,7 +159,7 @@
 			timeBasedCallback();
 		}
 		
-		fakeIncCallback(50);
+		fakeIncCallback(20);
 		
 		return t;
 	};
