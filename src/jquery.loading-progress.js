@@ -101,7 +101,7 @@
 			
 			// update timeBasedPercent
 			o.timeBasedPercent = Math.min(o.percent, o.timeBasedPercent + 1);
-			o.timeBasedGlobal = o.timeBasedPercent < 100;
+			o.timeBasedGlobal = o.timeBasedPercent >= 100;
 			
 			if (!!o.debug && !!window.console) {
 				console.log(o.percent, o.timeBasedPercent);
@@ -110,7 +110,7 @@
 			if ($.isFunction(o.load)) {
 				o.load.call(t, o);
 			}
-			if (o.timeBasedGlobal) {
+			if (!o.timeBasedGlobal) {
 				setTimeout(timeBasedCallback, o.timeBased);
 			}
 		};
