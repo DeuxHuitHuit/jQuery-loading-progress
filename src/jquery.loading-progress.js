@@ -39,7 +39,7 @@
 		}
 		
 		var updatePercent = function () {
-			o.percent = Math.min(100, ~~((o.count / o.total) * 100) || 0);
+			o.percent = Math.max(Math.min(100, ~~((o.count / o.total) * 100) || 0), o.percent);
 		};
 		
 		var loaded = function () {
