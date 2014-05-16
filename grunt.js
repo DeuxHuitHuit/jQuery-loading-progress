@@ -27,7 +27,10 @@ module.exports = function(grunt) {
 				'http://localhost:8080/tests/jquery.loading-progress.js.test.html?noglobals=true&notrycatch=true&jquery=1.8',
 				'http://localhost:8080/tests/jquery.loading-progress.js.test.html?noglobals=true&notrycatch=true&jquery=1.7',
 				'http://localhost:8080/tests/jquery.loading-progress.js.test.html?noglobals=true&notrycatch=true&jquery=1.6',
-				'http://localhost:8080/tests/jquery.loading-progress.js.test.html?noglobals=true&notrycatch=true&jquery=1.5']
+				'http://localhost:8080/tests/jquery.loading-progress.js.test.html?noglobals=true&notrycatch=true&jquery=1.5',
+				
+				'http://localhost:8080/tests/jquery.loading-progress.js.test.timebased.html?noglobals=true&notrycatch=true&jquery=2.0.3',
+				'http://localhost:8080/tests/jquery.loading-progress.js.test.timebased.html?noglobals=true&notrycatch=true&jquery=1.10.2']
 		},
 		lint: {
 			files: ['grunt.js', 'src/jquery.*.js']
