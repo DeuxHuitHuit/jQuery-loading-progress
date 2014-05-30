@@ -20,7 +20,8 @@
 			debug: false,
 			fakeIncTimeout: 1000,
 			timeBased: 0,
-			timeBasedPercent: 0
+			timeBasedPercent: 0,
+			minValue: 30
 		}
 	};
 	
@@ -99,7 +100,9 @@
 		var timeBasedCallback = function () {
 			
 			// update timeBasedPercent
-			o.timeBasedPercent = Math.min(o.percent, o.timeBasedPercent + 1);
+			o.timeBasedPercent = o.percent < o.minValue ?
+					o.timeBasedPercent + 1 : // always increment when below min
+					Math.min(o.percent, o.timeBasedPercent + 1); // limit to real value
 			o.timeBasedGlobal = o.timeBasedPercent >= 100;
 			
 			if (!!o.debug && !!window.console) {

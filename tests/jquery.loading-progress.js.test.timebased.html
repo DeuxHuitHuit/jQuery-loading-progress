@@ -62,7 +62,7 @@
 					debug: true,
 					timeBased: 10,
 					load: function (o) {
-						ok(o.percent >= o.timeBasedPercent);
+						ok(o.percent >= o.timeBasedPercent || o.timeBasedPercent <= o.minValue);
 						
 						if (o.timeBasedGlobal) {
 							start();
